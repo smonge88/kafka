@@ -62,9 +62,9 @@ En este ejemplo, vamos a hacer lo mismo pero esta vez haciendo uso de un **data 
 
 ### Data Contract
 
-El contrato de datos se encuentra definido en com.ucmmaster.kafka.avro.TemperatureRead.avsc
+El contrato de datos se encuentra definido en com.ucmmaster.kafka.data.v1.TemperatureTelemetry.avsc
 
-La generación de la correspondiente clase TemperatureRead.java se hace a través de un plugin maven.
+La generación de la correspondiente clase TemperatureTelemetry.java se hace a través de un plugin maven.
 
 ### Producer API
 
@@ -115,8 +115,69 @@ Vamos a probar a consumir los mensajes desde la herramienta de consola:
 ¿Qué pasará?
 
 ```bash
-kafka-console-consumer --bootstrap-server broker-1:29092 --topic temperature-telemetry --property print.key=true    
+kafka-console-consumer --bootstrap-server broker-1:29092 --topic temperature-telemetry-avro --property print.key=true    
 ``` 
+
+<details>
+  <summary><b>Solución</b></summary>
+
+¡El mensaje es ilegible. El motivo es que el consumidor de consola, espera que los bytes correspondientes al valor del mensaje sean caracteres textuales pero ahora son datos serializados en avro, que requiere el deserializador correspondiente!.
+</details>
+
+### Evolución del Data Contract
+
+Vamos a evolucionar el contrato de datos añadiendo un nuevo campo `humidty` y se encuentra definido en com.ucmmaster.kafka.data.v2.TemperatureTelemetry.avsc
+
+Vamos a la clase com.ucmmaster.kafka.avro.Producer y cambiamos lo siguiente:
+
+```java
+import com.ucmmaster.kafka.data.v1.TemperatureTelemetry;
+```
+
+por la clase de la v2:
+
+```java
+import com.ucmmaster.kafka.data.v2.TemperatureTelemetry;
+```
+
+cambia también el método 
+
+```java
+protected TemperatureTelemetry createRandomTemperatureTelemetry() {
+    int id = random.ints(1, 10).findFirst().getAsInt();
+    int temperature = random.ints(15, 40).findFirst().getAsInt();
+    return new TemperatureTelemetry(id,temperature);
+}
+```
+
+por este otro:
+
+```java
+protected TemperatureTelemetry createRandomTemperatureTelemetry() {
+    int id = random.ints(1, 10).findFirst().getAsInt();
+    int temperature = random.ints(15, 40).findFirst().getAsInt();
+    int humidity = random.ints(1, 100).findFirst().getAsInt();
+    return new TemperatureTelemetry(id,temperature,humidity);
+}
+```
+
+Arranca de nuevo la aplicación productora y observa los nuevos mensajes producidos
+
+<details>
+  <summary><b>Solución</b></summary>
+
+¡Los mensajes llevan el nuevo campo humidity y hay un nuevo schema en el Schema Registry!
+¡El consumidor sigue consumiendo los nuevos mensajes, a pesar de que sigue con la v1 del contrato!
+
+</details>
+
+Comprueba el Schema Registry:
+
+http://localhost:8081/subjects/temperature-telemetry-avro-value/versions
+
+http://localhost:8081/subjects/temperature-telemetry-avro-value/versions/2
+
+http://localhost:8081/config
 
 > ❗️ **NOTA**<br/>Para detener una aplicación de consola debemos pulsar **Ctrl+C**
 
