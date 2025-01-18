@@ -16,8 +16,8 @@ class Consumer {
 
     private final Logger logger = LoggerFactory.getLogger(Consumer.class.getName());
 
-    private String name;
-    private KafkaConsumer<String, String> consumer;
+    private final String name;
+    private final KafkaConsumer<String, String> consumer;
 
     public Consumer(String name, String config) {
         this.name = name;

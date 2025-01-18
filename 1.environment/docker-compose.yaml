@@ -21,7 +21,6 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LOG_DIRS: '/tmp/kraft-controller-logs'     
       CLUSTER_ID: ${CLUSTER_ID}
-
   controller-2:
     image: confluentinc/cp-kafka:${TAG}
     hostname: controller-2
@@ -43,7 +42,6 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LOG_DIRS: '/tmp/kraft-controller-logs'
       CLUSTER_ID: ${CLUSTER_ID}
-  
   controller-3:
     image: confluentinc/cp-kafka:${TAG}
     hostname: controller-3
@@ -65,7 +63,6 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LOG_DIRS: '/tmp/kraft-controller-logs'
       CLUSTER_ID: ${CLUSTER_ID}
-  
   broker-1:
     image: confluentinc/cp-kafka:${TAG}
     hostname: broker-1
@@ -94,8 +91,6 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
       CLUSTER_ID: ${CLUSTER_ID}
-
-  
   broker-2:
     image: confluentinc/cp-kafka:${TAG}
     hostname: broker-2
@@ -124,7 +119,6 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
       CLUSTER_ID: ${CLUSTER_ID}
-
   broker-3:
     image: confluentinc/cp-kafka:${TAG}
     hostname: broker-3

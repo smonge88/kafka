@@ -98,7 +98,7 @@ Explora a través de [Control Center](http://localhost:9021/clusters/Nk018hRAQFy
 
 ### Schema Registry
 
-Explora el siguiente endpoints del Schema Registry:
+Explora los siguientes endpoints del Schema Registry:
 
 http://localhost:8081/schemas
 
@@ -108,6 +108,15 @@ http://localhost:8081/subjects/temperature-telemetry-avro-value/versions
 
 http://localhost:8081/subjects/temperature-telemetry-avro-value/versions/1
 
+### Console Consumer
+
+Vamos a probar a consumir los mensajes desde la herramienta de consola:
+
+¿Qué pasará?
+
+```bash
+kafka-console-consumer --bootstrap-server broker-1:29092 --topic temperature-telemetry --property print.key=true    
+``` 
 
 > ❗️ **NOTA**<br/>Para detener una aplicación de consola debemos pulsar **Ctrl+C**
 

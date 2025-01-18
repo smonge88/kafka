@@ -18,7 +18,9 @@ dt_start = datetime.now()
 #
 conf = {'bootstrap.servers': "127.0.0.1:9092,127.0.0.1:9093,127.0.0.1:9094",
         'auto.offset.reset': 'earliest',
-        'group.id': "python-group"}
+        'group.id': 'python-group'
+        }
+
 consumer = Consumer(conf)
 
 # Consumer subscription and message processing

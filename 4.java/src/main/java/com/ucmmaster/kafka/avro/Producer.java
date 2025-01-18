@@ -1,4 +1,4 @@
-package com.ucmmaster.kafka.simple;
+package com.ucmmaster.kafka.avro;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -11,18 +11,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import com.ucmmaster.kafka.data.v1.TemperatureTelemetry;
 
 class Producer {
 
     private final Logger logger = LoggerFactory.getLogger(Producer.class.getName());
 
-    private KafkaProducer<String, String> producer;
+    private final KafkaProducer<String, TemperatureTelemetry> producer;
+
+    private final Random random = new Random();
 
     public Producer(String config) {
         this.producer = createProducer(config);
     }
 
-    private KafkaProducer<String, String> createProducer(String config) {
+    private KafkaProducer<String, TemperatureTelemetry> createProducer(String config) {
         // Load properties from the resources folder
         Properties properties = new Properties();
         try (InputStream input = Producer.class.getClassLoader().getResourceAsStream(config)) {
@@ -31,7 +34,7 @@ class Producer {
                 return null;
             }
             properties.load(input);
-            return new KafkaProducer<String, String>(properties);
+            return new KafkaProducer<String, TemperatureTelemetry>(properties);
         } catch (IOException ex) {
             logger.error(ex.getMessage());
         }
@@ -39,15 +42,26 @@ class Producer {
 
     }
 
+    protected TemperatureTelemetry createRandomTemperatureTelemetry() {
+        int id = random.ints(1, 10).findFirst().getAsInt();
+        int temperature = random.ints(15, 40).findFirst().getAsInt();
+        return new TemperatureTelemetry(id,temperature);
+        //int humidity = random.ints(1, 100).findFirst().getAsInt();
+        //return new TemperatureTelemetry(id,temperature,humidity);
+    }
+
+    protected int randomInt() {
+        return random.ints(0, 5).findFirst().orElse(0);
+    }
+
     public void produce(String topic) {
         try {
-            final Random random = new Random();
+
             while (true) {
-                TimeUnit.SECONDS.sleep(random.longs(0, 5).findFirst().orElse(0));
-                TemperatureRead tr = TemperatureRead.newRandomTemperatureRead();
-                final String key = String.valueOf(tr.getId());
-                final String value = tr.toString();
-                ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, value);
+                TimeUnit.SECONDS.sleep(randomInt());
+                TemperatureTelemetry value = createRandomTemperatureTelemetry();
+                String key = String.valueOf(value.getId());
+                ProducerRecord<String,TemperatureTelemetry> record = new ProducerRecord<>(topic, key, value);
                 record.headers().add("client","java".getBytes(StandardCharsets.UTF_8));
                 producer.send(record, (recordMetadata, e) -> {
                     if (e == null) {

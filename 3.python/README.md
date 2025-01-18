@@ -11,6 +11,7 @@ Para poder hacer uso de los dos ficheros python necesitamos instalar la dependen
 ```bash
 pip install confluent_kafka 
 ```
+[Confluent Kafka Python](https://github.com/confluentinc/confluent-kafka-python)
 
 ## Producer API
 

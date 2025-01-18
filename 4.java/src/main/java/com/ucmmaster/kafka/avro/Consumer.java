@@ -12,19 +12,21 @@ import java.util.Properties;
 
 import static java.util.Collections.singleton;
 
+import com.ucmmaster.kafka.data.v1.TemperatureTelemetry;
+
 class Consumer {
 
     private final Logger logger = LoggerFactory.getLogger(Consumer.class.getName());
 
-    private String name;
-    private KafkaConsumer<String, TemperatureRead> consumer;
+    private final String name;
+    private final KafkaConsumer<String, TemperatureTelemetry> consumer;
 
     public Consumer(String name, String config) {
         this.name = name;
         this.consumer = createConsumer(config);
     }
 
-    private KafkaConsumer<String, TemperatureRead> createConsumer(String config) {
+    private KafkaConsumer<String, TemperatureTelemetry> createConsumer(String config) {
         Properties properties = new Properties();
         try (InputStream input = Consumer.class.getClassLoader().getResourceAsStream(config)) {
             properties.load(input);
@@ -40,7 +42,7 @@ class Consumer {
         try {
             consumer.subscribe(singleton(topic));
             while (true) {
-                ConsumerRecords<String, TemperatureRead> records = consumer.poll(Duration.ofMillis(100));
+                ConsumerRecords<String, TemperatureTelemetry> records = consumer.poll(Duration.ofMillis(100));
                 records.forEach(record -> {
                     logger.info("[{}] record consumed partition:{} offset:{} timestamp:{} key:{} value:{} ", this.name, record.partition(), record.offset(), record.timestamp(), record.key(), record.value());
                 });

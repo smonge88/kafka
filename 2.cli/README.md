@@ -39,7 +39,7 @@ kafka-configs --bootstrap-server broker-1:29092 --entity-type brokers --entity-d
 Verifica que se ha cambiado
 
 ```bash
-kafka-configs --bootstrap-server broker-1:29092 --entity-type brokers ---describe --all | grep max.message.bytes
+kafka-configs --bootstrap-server broker-1:29092 --entity-type brokers --describe --all | grep max.message.bytes
 ```
 
 Restauramos la configuración previa

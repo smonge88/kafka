@@ -2,20 +2,20 @@ package com.ucmmaster.kafka.simple;
 
 import java.util.Random;
 
-public class TemperatureRead {
+class TemperatureTelemetry {
 
     private static final Random RANDOM = new Random();
 
     /**
      * Device id
      */
-    private int id;
+    private final int id;
     /**
      * Temperature
      */
-    private int temperature;
+    private final int temperature;
 
-    public TemperatureRead(int id, int temperature) {
+    public TemperatureTelemetry(int id, int temperature) {
         this.id = id;
         this.temperature = temperature;
     }
@@ -32,9 +32,9 @@ public class TemperatureRead {
         return String.format("{\"id\":%d, \"temperature\":%d}", id, temperature);
     }
 
-    public static TemperatureRead newRandomTemperatureRead(){
+    public static TemperatureTelemetry newRandomTemperatureRead(){
         int id = RANDOM.ints(1, 10).findFirst().getAsInt();
         int temperature = RANDOM.ints(15, 40).findFirst().getAsInt();
-        return new TemperatureRead(id,temperature);
+        return new TemperatureTelemetry(id,temperature);
     }
 }
