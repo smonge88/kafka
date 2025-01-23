@@ -13,7 +13,6 @@ def list_topics(producer):
     print("The local broker doesn't have any topic")
 
 def send_message(producer, key:str, value:str, topic:str):
-  # Checking that message and topic were specified
   if value == None:
     print("ERROR: A message value has to be provided")
     return
@@ -36,7 +35,10 @@ parser.add_argument("-k", "--key",
 args = parser.parse_args()
 
 # Producer setup
-conf = {'bootstrap.servers': "localhost:9092,localhost:9093,localhost:9094,",'client.id': socket.gethostname()}
+conf = {'bootstrap.servers': "localhost:9092,localhost:9093,localhost:9094",
+        'client.id': socket.gethostname(),
+        'partitioner': 'murmur2_random' #https://www.confluent.io/blog/standardized-hashing-across-java-and-non-java-producers/
+        }
 
 producer = Producer(conf)
 

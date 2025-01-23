@@ -45,7 +45,8 @@ class Producer {
             while (true) {
                 TimeUnit.SECONDS.sleep(random.longs(0, 5).findFirst().orElse(0));
                 TemperatureTelemetry tr = TemperatureTelemetry.newRandomTemperatureRead();
-                final String key = String.valueOf(tr.getId());
+                //final String key = String.valueOf(tr.getId());
+                final String key = null;
                 final String value = tr.toString();
                 ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, value);
                 record.headers().add("client","java".getBytes(StandardCharsets.UTF_8));

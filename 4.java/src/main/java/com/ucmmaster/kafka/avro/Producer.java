@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import com.ucmmaster.kafka.data.v1.TemperatureTelemetry;
+import com.ucmmaster.kafka.data.v2.TemperatureTelemetry;
 
 class Producer {
 
@@ -45,9 +45,9 @@ class Producer {
     protected TemperatureTelemetry createRandomTemperatureTelemetry() {
         int id = random.ints(1, 10).findFirst().getAsInt();
         int temperature = random.ints(15, 40).findFirst().getAsInt();
-        return new TemperatureTelemetry(id,temperature);
-        //int humidity = random.ints(1, 100).findFirst().getAsInt();
-        //return new TemperatureTelemetry(id,temperature,humidity);
+        //return new TemperatureTelemetry(id,temperature);
+        int humidity = random.ints(1, 100).findFirst().getAsInt();
+        return new TemperatureTelemetry(id,temperature,humidity);
     }
 
     protected int randomInt() {
