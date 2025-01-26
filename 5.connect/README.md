@@ -4,7 +4,6 @@ En esta sección practicaremos con la administración de conectores **source** y
 
 El pipeline de datos streaming que crearemos es el siguiente:
 
-
 ![til](./assets/connect-usecase.png)
 
 ## Get Kakfa Connect Status
@@ -16,7 +15,7 @@ Podemos acceder a esta `API` desde nuestra máquina.
 Nota: En caso de que vuestra distribución de docker no permita la comunicación con el contenedor podréis ejecutar los mismos comandos desde el mismo contenedor. Para entrar en él ejecutaremos:
 
 ```shell
-docker exec -it connect /bin/bash`
+docker exec -it connect /bin/bash
 ```
 
 Una vez dentro comprobaremos el estado y versiones instaladas llamando:
@@ -154,6 +153,10 @@ El connector que usaremos es `JDBC Sink Connector`, un conector que nos permitir
 Procedemos igual que antes:
 
 ```bash
+confluent-hub install confluentinc/kafka-connect-jdbc:10.8.0
+```
+
+```bash
 [appuser@connect ~]$ confluent-hub install confluentinc/kafka-connect-jdbc:10.8.0
 The component can be installed in any of the following Confluent Platform installations:
   1. / (installed rpm/deb package)
@@ -191,7 +194,7 @@ En la carpeta `1.environment/mysql` podéis encontrar el jar del driver en cuest
 Para copiarlo a nuestro contendor (ejecutar este comando en el directorio 5.connect):
 
 ```bash
-docker cp ../1.environment/mysql/mysql-connector-java-5.1.45.jar connect:/usr/share/confluent-hub-components/confluentinc-kafka-connect-jdbc/lib/mysql-connector-java-5.1.45.jar`
+docker cp ../1.environment/mysql/mysql-connector-java-5.1.45.jar connect:/usr/share/confluent-hub-components/confluentinc-kafka-connect-jdbc/lib/mysql-connector-java-5.1.45.jar
 ```
 
 > ❗️ **NOTA**<br/>Si tuviéramos que conectarnos a otro tipo de base de datos como Oracle, Postgres, DB2 ... bastaría con hacer lo mismo con el correspondiente driver
@@ -275,7 +278,6 @@ Tras revisar la documentación:
   "name": "source-datagen-users",
   "config": {
     "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
-    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
     "kafka.topic": "users",
     "quickstart": "users",
     "max.interval": 1000,
@@ -336,24 +338,25 @@ Haciendo uso, de nuevo del api de connect podemos recibir la información import
 
 Consulta Connector información:
 
-`curl http://localhost:8083/connectors/datagen-users`
+```bash
+curl http://localhost:8083/connectors/source-datagen-users
+```
 
 ```json
 {
-  "name": "datagen-users",
+  "name": "source-datagen-users",
   "config": {
     "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
     "quickstart": "users",
     "tasks.max": "1",
-    "name": "datagen-users",
+    "name": "source-datagen-users",
     "kafka.topic": "users",
     "max.interval": "1000",
-    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
     "iterations": "10000000"
   },
   "tasks": [
     {
-      "connector": "datagen-users",
+      "connector": "source-datagen-users",
       "task": 0
     }
   ],
@@ -632,7 +635,7 @@ Usaremos comandos MySQL ejecutados dentro del contenedor para observar que es lo
 docker exec -it mysql /bin/bash
 ```
 ```bash
-bash-4.4# mysql --user=root --password=password --database=db
+mysql --user=root --password=password --database=db
 ```
 ```
 bash-4.4# mysql --user=root --password=password --database=db 
