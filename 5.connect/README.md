@@ -480,7 +480,7 @@ Permite pausar el connector (la aplicación sigue corriendo pero los **productor
 Permite continuar donde los dejamos sin reiniciar:
 
 ```bash
-curl -X PUT http://localhost:8083/connectors/datagen-users/resume 
+curl -X PUT http://localhost:8083/connectors/source-datagen-users/resume 
 
 curl http://localhost:8083/connectors/source-datagen-users/status | jq  
 ```
@@ -509,7 +509,7 @@ curl http://localhost:8083/connectors/source-datagen-users/status | jq
 Reinicia el conector:
 
 ```bash
-curl -X POST http://localhost:8083/connectors/datagen-users/restart
+curl -X POST http://localhost:8083/connectors/source-datagen-users/restart
 
 curl http://localhost:8083/connectors/source-datagen-users/status | jq  
 ```

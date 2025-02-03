@@ -256,6 +256,7 @@ services:
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_REPLICATION_FACTOR: 1
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: 'true'
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: 'true'
+
   ksqldb-cli:
     image: confluentinc/cp-ksqldb-cli:${TAG}
     container_name: ksqldb-cli
@@ -270,6 +271,7 @@ services:
       - ksqldb-server
     entrypoint: /bin/sh
     tty: true
+
   mysql:
     image: mysql:8.3
     hostname: mysql
@@ -282,24 +284,3 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       MYSQL_ROOT_HOST: 172.%
-
-  elasticsearch:
-    image: elasticsearch:8.17.1
-    hostname: elasticsearch
-    container_name: elasticsearch
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-    ports:
-      - "9200:9200"
-
-  kibana:
-    image: kibana:8.17.1
-    hostname: kibana
-    container_name: kibana
-    depends_on:
-      - elasticsearch
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    ports:
-      - "5601:5601"
