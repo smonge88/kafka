@@ -20,7 +20,6 @@
                     <schemaRegistryUrls>
                         <param>http://localhost:8081</param>
                     </schemaRegistryUrls>
-
                     <schemaTypes>
                         <temperature-telemetry>AVRO</temperature-telemetry>
                     </schemaTypes>
