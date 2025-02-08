@@ -27,7 +27,7 @@ mvn dependency:copy-dependencies
 ```
 
 ```bash
-java -cp  "target/classes:target/dependency/*" com.ucmmaster.kafka.simple.ProducerApp    
+java -Djava.security.manager=allow -cp "target/classes:target/dependency/*" com.ucmmaster.kafka.simple.ProducerApp    
 ```
 
 Deberías empezar a ver logs en la pantalla
@@ -39,7 +39,7 @@ Las clases relativas a la producción son **Consumer** y **ConsumerApp**
 En este caso abre una nueva terminal para poder tener ejecutando a la vez productor y consumidor
 
 ```bash
-java -cp  "target/classes:target/dependency/*" com.ucmmaster.kafka.simple.ConsumerApp    
+java -Djava.security.manager=allow -cp "target/classes:target/dependency/*" com.ucmmaster.kafka.simple.ConsumerApp    
 ``` 
 
 Deberías empezar a ver logs en la pantalla
@@ -77,7 +77,7 @@ mvn dependency:copy-dependencies
 ```
 
 ```bash
-java -cp  "target/classes:target/dependency/*" com.ucmmaster.kafka.avro.ProducerAvroApp    
+java -Djava.security.manager=allow -cp "target/classes:target/dependency/*" com.ucmmaster.kafka.avro.ProducerAvroApp    
 ```
 
 Deberías empezar a ver logs en la pantalla
@@ -89,7 +89,7 @@ Las clases relativas a la producción son **Consumer** y **ConsumerAvroApp** den
 En este caso abre una nueva terminal para poder tener ejecutando a la vez productor y consumidor
 
 ```bash
-java -cp  "target/classes:target/dependency/*" com.ucmmaster.kafka.avro.ConsumerAvroApp    
+java -Djava.security.manager=allow -cp "target/classes:target/dependency/*" com.ucmmaster.kafka.avro.ConsumerAvroApp    
 ``` 
 
 ### Control Center
