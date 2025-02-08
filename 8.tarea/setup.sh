@@ -2,6 +2,10 @@
 
 cd ../1.environment
 
+echo "Iniciando entorno"
+docker compose up -d
+sleep 30
+
 echo "Creando la tabla transactions"
 docker cp ../8.tarea/sql/transactions.sql mysql:/
 docker exec mysql bash -c "mysql --user=root --password=password --database=db < /transactions.sql"

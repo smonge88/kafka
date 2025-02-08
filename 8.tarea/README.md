@@ -15,10 +15,11 @@ La carpeta se organiza en los directorios
 El siguiente script automatiza algunos de los pasos necesarios para preparar el entorno
 para desarrollar la tarea.
 
-1. Crea la tabla transactions.
-2. Instala los plugins de los conectores.
-2. Copia los drivers JDBC para MySQL.
-3. Copia los schemas AVRO dentro del contenedor de connect.
+1. Inicia el entorno.
+2. Crea la tabla transactions.
+3. Instala los plugins de los conectores.
+4. Copia los drivers JDBC para MySQL.
+5. Copia los schemas AVRO dentro del contenedor de connect.
 
 ```shell
 ./setup.sh
@@ -62,3 +63,11 @@ Los conectores a desarrollar por el alumno están comentados en el script. Desco
 ## Kafka Streams
 
 A completar por el alumno.
+
+## Shutdown
+
+El siguiente script para el entorno
+
+```shell
+./shutdown.sh
+```
