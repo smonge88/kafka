@@ -33,7 +33,11 @@ python python_producer.py produce -t temperature-telemetry -k '1' -v '{"id": 1, 
 
 El fichero **python_consumer.py** es una aplicación python que permite consumir mensajes de un topic
 
-Recibe dos parámetros posicionales: el topic y la duración en segundos que estará consumiendo. A continuación un ejemplo de consumir durante un minuto (60s) 
+Recibe dos parámetros posicionales: el topic y la duración en segundos que estará consumiendo. A continuación un ejemplo de consumir durante un minuto (60s)
+
+Significa que durante ese tiempo, consume todo lo que tenga.
+
+Utiliza el eraliest, que es similar al beginning.
 
 ```bash
 python python_consumer.py temperature-telemetry 300
