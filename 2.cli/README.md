@@ -22,6 +22,8 @@ El comando **kafka-configs** permite cambiar la configuración de los brokers y 
 
 [Kafka Topic-Level Configs](http://kafka.apache.org/10/documentation.html#topicconfigs)
 
+El puerto oficial de kafka es 9092.
+
 #### Lista propiedades de configuración a nivel de cluster
 
 ```bash
@@ -30,6 +32,7 @@ kafka-configs --bootstrap-server broker-1:29092 --entity-type brokers --describe
 
 #### Cambiar propiedades de configuración a nivel de cluster
 
+Bootstrap server: da info adicional sobre los brokers.
 En este caso, vamos a cambiar el tamaño del mensaje (max.message.bytes):
 
 ```bash
@@ -61,12 +64,14 @@ kafka-topics --bootstrap-server broker-1:29092 --list
 #### Creación de un topic
 
 En este caso, vamos a crear un topic llamado **my-topic** con una sola partición y personalizando un par de propiedades (message.max.bytes y flush.messages=1)
+El término "flush" se refiere al proceso de forzar la escritura de los mensajes desde el buffer en memoria hacia el log en disco, para poder verlos desde la consola.
 
 ```bash
 kafka-topics --bootstrap-server broker-1:29092 --create --topic my-topic --partitions 1 --replication-factor 1 --config max.message.bytes=64000 --config flush.messages=1
 ```
 
 #### Describir un topic
+Da información resumida del topic. Muestra el leader (el broker donde se encuentra el topic) y el factor de replicación
 
 ```bash
 kafka-topics --bootstrap-server broker-1:29092 --topic my-topic --describe
@@ -119,6 +124,7 @@ Este comando es interactivo, y producirá un mensaje por cada línea que escriba
 Los mensajes a producir seguirán el siguiente formato: **key**,**value**
 
 Es decir lo que va antes de la coma es la clave (key) y lo que va después es el valor (value). En este caso el value de nuestros mensajes es un objeto JSON
+Los que usan la misma clave, quedan en la misma partición. Pero en una particion, pueden haber distintas llaves
 
 ```json
 1,{"id": 1, "temperature": 15}
@@ -131,6 +137,7 @@ Es decir lo que va antes de la coma es la clave (key) y lo que va después es el
 ```
 
 Copia de una en una cada línea, pégala en la consola interactiva del producer y pulsa intro
+estos mensajes van a tener un periodo de rentencion. Por ej una semana.
 
 ### kafka-console-consumer
 
@@ -139,6 +146,8 @@ El comando **kafka-console-consumer** nos permite consumir datos en un topic.
 #### Consumir datos en un topic
 
 Ahora crearemos un consumidor de consola para consumir los datos
+from beginning: que se vaya al offset más antiguo y que comience a leer desde ahí
+Si le quito el from beginning, no enviara nada. Sino hasta que llegue nueva data
 
 ```bash
 kafka-console-consumer --bootstrap-server broker-1:29092 --topic temperature-telemetry --property print.key=true --from-beginning
@@ -168,6 +177,6 @@ Ahora consumiremos con dos consumidores formando un único grupo de consumo (**c
 kafka-console-consumer --bootstrap-server broker-1:29092 --topic temperature-telemetry --property print.key=true --from-beginning --group console-group
 ```
 
-Observad el rebalanceo y particionado que se produce mediante la partition key elegida.
+Observad el rebalanceo y particionado que se produce mediante la partition key elegida. Es decir unos brokers consumidores reciben unos datos, mientras que los otros, reciben otros.
 
 > ❗️ **NOTA**<br/>Para detener una aplicación de consola debemos pulsar **Ctrl+C**
